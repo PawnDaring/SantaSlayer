@@ -64,30 +64,6 @@ const powerups = new PowerUps();
 const effects = new Effects();
 const gun = new Gun();
 const krampus = new Krampus();
-// Simple SFX cache
-const sfx = {
-  enabled: false,
-  // Powerups
-  tree: (() => { try { const a = new Audio('./assets/sfx/tree.mp3'); a.preload = 'auto'; a.volume = 0.9; return a; } catch { return null; } })(),
-  snowman: (() => { try { const a = new Audio('./assets/sfx/snowman.mp3'); a.preload = 'auto'; a.volume = 0.9; return a; } catch { return null; } })(),
-  // Presents
-  present: (() => { try { const a = new Audio('./assets/sfx/present.mp3'); a.preload = 'auto'; a.volume = 0.9; return a; } catch { return null; } })(),
-  // Mimic death or penalty
-  mimic: (() => { try { const a = new Audio('./assets/sfx/mimic.mp3'); a.preload = 'auto'; a.volume = 0.9; return a; } catch { return null; } })(),
-};
-
-function unlockAudio() {
-  if (sfx.enabled) return;
-  // Attempt to play a silent beep to unlock on user gesture
-  try {
-    const test = new Audio();
-    test.src = 'data:audio/mp3;base64,//uQZAAAAAAAAAAAAAAAAAAAA'; // minimal/silent
-    test.play().catch(() => {});
-  } catch {}
-  sfx.enabled = true;
-}
-window.addEventListener('pointerdown', unlockAudio, { once: true });
-window.addEventListener('keydown', unlockAudio, { once: true });
 
 // Resize canvas to device pixels
 function resize() {
@@ -177,13 +153,10 @@ assets.loadAll().then(() => {
     coverImg.onerror = () => console.warn('Pause cover image failed to load:', coverImg.src);
     coverImg.src = base + (base.includes('?') ? '&' : '?') + 't=' + Date.now();
   }
-  // Initialize sound button state
-  // Remove HUD sound toggle; use modal sound control instead
   // Modal controls
   const pauseModal = document.getElementById('pauseModal');
   const modalContinue = document.getElementById('modalContinue');
   const modalRestart = document.getElementById('modalRestart');
-  const modalSound = document.getElementById('modalSound');
   const showModal = () => { pauseModal.classList.add('show'); };
   const hideModal = () => { pauseModal.classList.remove('show'); };
   // Wire Pause button to modal
@@ -199,16 +172,7 @@ assets.loadAll().then(() => {
     krampusCooldown = 0;
     running = true; ui.setPaused(false);
   });
-  const syncModalSound = () => { modalSound.classList.toggle('on', !!sfx.enabled); modalSound.textContent = sfx.enabled ? '🔊' : '🔈'; };
-  syncModalSound();
-  modalSound.addEventListener('click', async () => {
-    sfx.enabled = !sfx.enabled; syncModalSound();
-    const sample = sfx.tree || sfx.present || sfx.mimic || sfx.snowman;
-    if (sfx.enabled && sample) { try { sample.currentTime = 0; await sample.play(); } catch(e){} }
-    // keep HUD button in sync
-    const btnSound = document.getElementById('btnSound');
-    if (btnSound) { btnSound.classList.toggle('on', !!sfx.enabled); btnSound.textContent = sfx.enabled ? '🔊' : '🔈'; }
-  });
+  // Sound controls removed
 
   // Game Over modal controls
   const gameOverModal = document.getElementById('gameOverModal');
@@ -282,15 +246,13 @@ function update(dt) {
         effects.floatText(it.x + it.w/2, it.y, `-${penalty} -${penalty}s`, red);
         // Red vignette for mimic hit
         effects.vignetteRed(0.7);
-        // mimic collect sound
-        if (sfx.enabled && sfx.mimic) { try { sfx.mimic.currentTime = 0; sfx.mimic.play(); } catch {} }
+        // sound disabled
       } else {
         score += 10;
         timeLeft += 5;
         effects.pulseGood(it.x + it.w/2, it.y + it.h/2);
         effects.floatText(it.x + it.w/2, it.y, '+10 +5s', ink);
-        // present collect sound
-        if (sfx.enabled && sfx.present) { try { sfx.present.currentTime = 0; sfx.present.play(); } catch {} }
+        // sound disabled
         // Stack global speed-up
         speedStacks += 1;
       }
@@ -316,15 +278,13 @@ function update(dt) {
         gun.cancel();
         // add a slow stack (e.g., 4s duration) that stacks
         slowStacks.push(4);
-        // Play snowman sfx
-        if (sfx.enabled && sfx.snowman) { try { sfx.snowman.currentTime = 0; sfx.snowman.play(); } catch {} }
+        // sound disabled
       } else {
         // Tree stacks the gun timer and shooters; show feedback
         effects.screenFlash('rainbow', 1.2);
         gun.activate('tree');
         effects.floatText(pu.x + pu.w/2, pu.y - 10, 'TREE STACK!', ink);
-        // Play tree sfx
-        if (sfx.enabled && sfx.tree) { try { sfx.tree.currentTime = 0; sfx.tree.play(); } catch {} }
+        // sound disabled
         // picking tree cancels slow stacks
         slowStacks = [];
       }
@@ -372,8 +332,7 @@ function update(dt) {
   if (died && died.length) {
     const ink = getComputedStyle(document.documentElement).getPropertyValue('--ink-green');
     for (const d of died) {
-      // Play mimic death sfx
-      if (sfx.enabled && sfx.mimic) { try { sfx.mimic.currentTime = 0; sfx.mimic.play(); } catch {} }
+      // sound disabled
       // Randomly drop one: tree powerup, snowman powerup, or good present
       const choice = Math.floor(Math.random() * 3);
       if (choice === 0) {
