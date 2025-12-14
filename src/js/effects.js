@@ -20,6 +20,17 @@ export class Effects {
       this.particles.push({ x, y, vx: Math.cos(ang)*spd, vy: Math.sin(ang)*spd, a: 1, life: 0.6, size, color });
     }
   }
+  burstGood(x, y) {
+    const ink = getComputedStyle(document.documentElement).getPropertyValue('--ink-green');
+    const count = Math.floor(24 * this.scale);
+    for (let i = 0; i < count; i++) {
+      const ang = Math.random() * Math.PI * 2;
+      const spd = (60 + Math.random()*140) * this.scale;
+      const size = 2 + Math.random() * 3 * this.scale;
+      const color = ink;
+      this.particles.push({ x, y, vx: Math.cos(ang)*spd, vy: Math.sin(ang)*spd, a: 1, life: 0.7, size, color });
+    }
+  }
   pulseGood(x, y) {
     const ink = getComputedStyle(document.documentElement).getPropertyValue('--ink-green');
     this.rings.push({ x, y, r: 2 * this.scale, dr: 120 * this.scale, a: 0.8, life: 0.5, color: ink });
