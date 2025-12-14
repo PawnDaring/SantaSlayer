@@ -14,6 +14,10 @@ export class Player {
     this.x = Math.floor((w - this.w) / 2);
     this.y = Math.floor(h - this.h - 24);
   }
+  setCenter(w, h) {
+    this.x = Math.floor((w - this.w) / 2);
+    this.y = Math.floor((h - this.h) / 2);
+  }
   clampTo(w, h) {
     this.x = Math.max(0, Math.min(w - this.w, this.x));
     this.y = Math.max(0, Math.min(h - this.h, this.y));

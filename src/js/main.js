@@ -73,7 +73,7 @@ function resize() {
   canvas.style.width = rect.width + 'px';
   canvas.style.height = rect.height + 'px';
   ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-  player.setBottomCenter(canvas.width, canvas.height);
+  player.setCenter(canvas.width, canvas.height);
 }
 window.addEventListener('resize', resize);
 resize();
@@ -120,7 +120,7 @@ ui.onPause(() => { running = !running; ui.setPaused(!running); });
 ui.onRestart(() => {
   score = 0; timeLeft = 60; hitCooldown = 0;
   obstacles.reset(); presents.reset(); powerups.reset();
-  player.reset(); player.setBottomCenter(canvas.width, canvas.height);
+  player.reset(); player.setCenter(canvas.width, canvas.height);
   slowStacks = [];
   speedStacks = 0;
   krampus.reset();
