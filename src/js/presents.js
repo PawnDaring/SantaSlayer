@@ -28,7 +28,7 @@ export class Presents {
       const vy = (80 + Math.random() * 120) * this.speedMul;   // slower than obstacles
       const isBad = Math.random() < 0.45; // increased chance for mimic
       const pool = isBad ? this.sprites.bad : this.sprites.good;
-      const spriteIndex = pool ? Math.floor(Math.random() * pool.length) : -1;
+      const spriteIndex = (pool && pool.length > 0) ? Math.floor(Math.random() * pool.length) : -1;
       // for bad presents, add scale-shift animation and hp for bullet hits
       const anim = isBad ? { t: 0, min: 1.0, max: 2.0 } : null;
       const hp = isBad ? 3 : 0;
@@ -53,7 +53,7 @@ export class Presents {
     const red = getComputedStyle(document.documentElement).getPropertyValue('--accent-red');
     for (const it of this.items) {
       const pool = it.bad ? this.sprites.bad : this.sprites.good;
-      if (pool && it.si >= 0) {
+      if (pool && it.si >= 0 && pool[it.si]) {
         if (it.bad && it.anim) {
           const phase = it.anim.t * 4; // speed
           const k = it.anim.min + (Math.sin(phase) * 0.5 + 0.5) * (it.anim.max - it.anim.min); // 1..2
@@ -61,9 +61,11 @@ export class Presents {
           const dh = it.h * k;
           const cx = it.x + it.w/2;
           const cy = it.y + it.h/2;
-          ctx.drawImage(pool[it.si], cx - dw/2, cy - dh/2, dw, dh);
+          const img = pool[it.si];
+          if (img) ctx.drawImage(img, cx - dw/2, cy - dh/2, dw, dh);
         } else {
-          ctx.drawImage(pool[it.si], it.x, it.y, it.w, it.h);
+          const img = pool[it.si];
+          if (img) ctx.drawImage(img, it.x, it.y, it.w, it.h);
         }
       } else {
         ctx.fillStyle = it.bad ? red : red;
