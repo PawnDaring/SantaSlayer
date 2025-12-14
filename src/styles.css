@@ -22,6 +22,43 @@ body {
   overflow: hidden;
 }
 
+/* Loading overlay */
+.loading {
+  position: fixed;
+  inset: 0;
+  background: rgba(244,234,223,0.96);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+.loading-inner {
+  background: var(--paper-beige);
+  border: 6px solid var(--ink-green);
+  box-shadow: 0 6px 0 var(--ink-green);
+  padding: 16px 18px;
+  width: min(520px, 90vw);
+  text-align: center;
+}
+.loading-title {
+  font-family: 'Mountains of Christmas', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 2.2em;
+  color: var(--accent-red);
+  margin-bottom: 10px;
+}
+.loading-bar {
+  height: 12px;
+  border: 3px solid var(--ink-green);
+  background: var(--paper-beige);
+}
+.loading-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--ink-green);
+}
+.loading-tip { margin-top: 10px; color: var(--ink-green-weak); }
+
 /* Canvas is the playfield */
 #game {
   display: block;

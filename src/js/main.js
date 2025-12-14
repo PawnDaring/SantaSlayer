@@ -147,8 +147,16 @@ ui.onRestart(() => {
   running = true; ui.setPaused(false);
 });
 
-// Load assets (optional; game draws fallbacks if missing)
-assets.loadAll().then(() => {
+// Loading overlay
+const loadingEl = document.getElementById('loading');
+const loadingFill = document.getElementById('loadingFill');
+
+async function init() {
+  // Load assets first, then start the game loop
+  if (loadingEl) loadingEl.style.display = 'flex';
+  await assets.loadAll();
+  if (loadingFill) loadingFill.style.width = '100%';
+  // Assign sprites
   player.setSprite(assets.get('santa'));
   parallax.setSprites({ 
     cloud: assets.get('cloud'), 
@@ -210,7 +218,10 @@ assets.loadAll().then(() => {
     krampusCooldown = 0;
     running = true; ui.setPaused(false);
   });
-});
+  // Hide loading screen
+  if (loadingEl) loadingEl.style.display = 'none';
+  requestAnimationFrame(loop);
+}
 
 function update(dt) {
   // Time countdown
@@ -451,4 +462,4 @@ function loop(now) {
   draw();
   requestAnimationFrame(loop);
 }
-requestAnimationFrame(loop);
+init();

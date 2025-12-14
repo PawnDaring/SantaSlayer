@@ -12,6 +12,13 @@
   </head>
   <body>
     <div id="app" class="app">
+      <div id="loading" class="loading" aria-live="polite" aria-busy="true">
+        <div class="loading-inner">
+          <div class="loading-title">Loading Santa SLAYS…</div>
+          <div class="loading-bar"><div class="loading-fill" id="loadingFill"></div></div>
+          <div class="loading-tip">Preparing clouds and sprites…</div>
+        </div>
+      </div>
       <canvas id="game" aria-label="Santa SLAYS game" tabindex="0"></canvas>
       <div class="frame" aria-hidden="true"></div>
       <div class="hud">
