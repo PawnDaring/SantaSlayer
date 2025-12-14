@@ -107,8 +107,8 @@ canvas.addEventListener('pointerdown', (e) => {
 });
 canvas.addEventListener('pointermove', (e) => {
   if (!dragging || e.pointerId !== dragId) return;
-  const dx = e.clientX - lastPointer.x;
-  const dy = e.clientY - lastPointer.y;
+  const dx = (e.clientX - lastPointer.x) * DPR;
+  const dy = (e.clientY - lastPointer.y) * DPR;
   lastPointer = { x: e.clientX, y: e.clientY };
   player.nudge(dx, dy);
 });
