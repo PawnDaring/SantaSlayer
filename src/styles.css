@@ -181,3 +181,22 @@ body {
   from { opacity: 1; transform: scale(1); }
   to { opacity: 0.6; transform: scale(1.04); }
 }
+
+/* Mobile controls */
+.mobile-controls {
+  position: fixed;
+  left: 0; right: 0; bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+  z-index: 25;
+  pointer-events: auto;
+}
+.mobile-controls .ctrl {
+  font-size: 1.6em;
+  padding: 10px 16px;
+}
+@media (min-width: 641px) {
+  .mobile-controls { display: none; }
+}

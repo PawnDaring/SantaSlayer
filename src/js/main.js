@@ -97,6 +97,25 @@ window.addEventListener('keydown', (e) => {
 });
 window.addEventListener('keyup', (e) => keys.delete(e.key.toLowerCase()));
 
+// Mobile: on-screen left/right buttons
+const btnLeft = document.getElementById('btnLeft');
+const btnRight = document.getElementById('btnRight');
+let leftHeld = false;
+let rightHeld = false;
+function bindHold(btn, setter) {
+  if (!btn) return;
+  const start = (e) => { setter(true); e.preventDefault(); };
+  const end = (e) => { setter(false); e.preventDefault(); };
+  btn.addEventListener('pointerdown', start);
+  btn.addEventListener('pointerup', end);
+  btn.addEventListener('pointerleave', end);
+  btn.addEventListener('pointercancel', end);
+  btn.addEventListener('touchstart', start, { passive: false });
+  btn.addEventListener('touchend', end, { passive: false });
+}
+bindHold(btnLeft, (v) => { leftHeld = v; });
+bindHold(btnRight, (v) => { rightHeld = v; });
+
 // Input: pointer drag to move
 let dragging = false;
 let dragId = null;
@@ -210,7 +229,7 @@ function update(dt) {
 
   // Movement from keys
   const speed = player.speed;
-  const vx = (keys.has('arrowright') || keys.has('d') ? 1 : 0) - (keys.has('arrowleft') || keys.has('a') ? 1 : 0);
+  const vx = ((keys.has('arrowright') || keys.has('d') || rightHeld) ? 1 : 0) - ((keys.has('arrowleft') || keys.has('a') || leftHeld) ? 1 : 0);
   const vy = (keys.has('arrowdown') || keys.has('s') ? 1 : 0) - (keys.has('arrowup') || keys.has('w') ? 1 : 0);
   player.x += vx * speed * sdt;
   player.y += vy * speed * sdt;
