@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Santa SLAYS — Retro 8-bit</title>
+    <!-- Festive font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./src/styles.css" />
+  </head>
+  <body>
+    <div id="app" class="app">
+      <canvas id="game" aria-label="Santa SLAYS game" tabindex="0"></canvas>
+      <div class="frame" aria-hidden="true"></div>
+      <div class="hud">
+        <div class="hud-left">
+          <button id="btnPause" class="btn">Pause</button>
+        </div>
+        <div class="hud-right">
+          <span id="time" class="time">Time: 60</span>
+          <span id="score" class="score">Score: 0</span>
+          
+        </div>
+      </div>
+      <!-- Pause Modal -->
+      <div id="pauseModal" class="modal" aria-hidden="true" role="dialog" aria-label="Pause Menu">
+        <div class="modal-content">
+          <img src="./assets/png/santacover.png" alt="Santa Cover" class="modal-cover" />
+          <div class="modal-actions">
+            <button id="modalContinue" class="btn">Continue</button>
+            <button id="modalRestart" class="btn">Restart</button>
+            <button id="modalSound" class="btn btn-sound">🔊</button>
+          </div>
+        </div>
+      </div>
+      <!-- Game Over Modal -->
+      <div id="gameOverModal" class="modal" aria-hidden="true" role="dialog" aria-label="Game Over">
+        <div class="modal-content">
+          <img src="./assets/png/gameover.png" alt="Game Over" class="modal-cover" />
+          <div class="modal-score">
+            <span id="finalScore" class="score">Score: 0</span>
+          </div>
+          <div class="modal-actions">
+            <button id="gameOverRestart" class="btn">Restart</button>
+          </div>
+        </div>
+      </div>
+      <div class="gunbar" aria-hidden="true"><div class="gunbar-fill" id="gunbarFill"></div></div>
+    </div>
+    <script type="module" src="./src/js/main.js"></script>
+  </body>
+</html>

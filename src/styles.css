@@ -1,0 +1,179 @@
+/* Retro Christmas palette */
+:root {
+  --paper-beige: #f4eadf; /* poster card */
+  --ink-green: #165b33;   /* dark green lines */
+  --accent-red: #8b0033;  /* deep magenta poinsettia */
+  --ink-green-weak: #1f7a45;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--paper-beige);
+  color: var(--ink-green);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+.app {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Canvas is the playfield */
+#game {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  background: var(--paper-beige);
+  outline: none;
+}
+
+/* Decorative frame overlay */
+.frame {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  border: 12px solid var(--ink-green);
+  box-shadow:
+    inset 0 0 0 4px var(--paper-beige),
+    0 0 0 0.5px var(--ink-green);
+}
+.frame::before,
+.frame::after {
+  content: "";
+  position: absolute;
+  width: 18px; height: 18px;
+  background: var(--accent-red);
+  box-shadow: 0 0 0 3px var(--ink-green);
+}
+.frame::before {
+  top: 8px; left: 8px;
+}
+.frame::after {
+  bottom: 8px; right: 8px;
+}
+
+/* HUD stays above everything */
+.hud {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: env(safe-area-inset-top) 12px 8px 12px;
+  background: linear-gradient(to bottom, rgba(244,234,223,0.98), rgba(244,234,223,0.60));
+  border-bottom: 3px solid var(--ink-green);
+  z-index: 20;
+}
+.hud-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+.score, .time {
+  font-weight: 700;
+  margin: 0;
+  font-family: 'Mountains of Christmas', system-ui, sans-serif;
+  font-size: 3em; /* 3x bigger */
+  line-height: 1;
+  letter-spacing: 1px;
+  color: var(--accent-red);
+}
+.score {
+  /* Yellow-orange fill with thin green stroke simulated behind using shadows */
+  color: #ffa500; /* orange-yellow */
+  -webkit-text-stroke: 0; /* no front stroke */
+  text-shadow:
+    -1px 0 0 var(--ink-green),
+    1px 0 0 var(--ink-green),
+    0 -1px 0 var(--ink-green),
+    0 1px 0 var(--ink-green);
+}
+.time {
+  /* Timer remains red without stroke */
+  color: var(--accent-red);
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+}
+.time { -webkit-text-stroke: 0; text-shadow: none; }
+.time { margin-right: 0; }
+.btn {
+  appearance: none;
+  background: var(--paper-beige);
+  color: var(--ink-green);
+  border: 3px solid var(--ink-green);
+  padding: 6px 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  box-shadow: 2px 2px 0 var(--accent-red);
+}
+.btn:active { transform: translate(1px, 1px); }
+.btn-sound { font-size: 1.2em; line-height: 1; padding: 4px 8px; }
+.btn-sound.on { background: var(--ink-green); color: var(--paper-beige); }
+
+/* Mobile tweaks */
+@media (max-width: 640px) {
+  .hud { font-size: 14px; }
+  .score { font-size: 2em; }
+  .time { font-size: 2em; -webkit-text-stroke: 0; text-shadow: none; }
+  .btn { padding: 5px 8px; border-width: 2px; }
+  .frame { border-width: 10px; }
+}
+
+/* Gun timer bar */
+.gunbar {
+  position: fixed;
+  left: 12px; right: 12px; bottom: 12px;
+  height: 10px;
+  border: 3px solid var(--ink-green);
+  background: var(--paper-beige);
+  z-index: 20;
+}
+.gunbar-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--accent-red);
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 30;
+}
+.modal.show { display: flex; }
+.modal-content {
+  background: var(--paper-beige);
+  border: 6px solid var(--ink-green);
+  box-shadow: 0 6px 0 var(--ink-green);
+  padding: 16px;
+  max-width: 90vw;
+  text-align: center;
+}
+.modal-cover {
+  max-width: 360px;
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto 12px auto;
+  image-rendering: pixelated;
+  border: 4px solid var(--ink-green);
+}
+.modal-actions { display: flex; gap: 12px; justify-content: center; }
+.modal-score { margin: 8px 0 12px; text-align: center; }
+.modal-score .score { animation: flash 0.8s infinite alternate; }
+@keyframes flash {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0.6; transform: scale(1.04); }
+}
